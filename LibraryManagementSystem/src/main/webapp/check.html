@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/6d1bfc0c72.js" crossorigin="anonymous"></script>
+<style type="text/css">
+*{
+color:#CFD1D3;
+background:#15202B;
+}
+
+td,th,table{
+text-align:center;
+border:1px solid grey;
+border-collapse: collapse;
+padding:10px;
+margin-top:10px;
+
+}
+th{
+font-size:23px;
+}
+td{
+font-size:19px;
+}
+
+span{
+font-size:40px;
+
+}
+
+
+a{
+margin-right:20px;
+text-decoration:none;
+font-size:20px;
+color:#4DA1FF;
+}
+i{
+font-size:29px;
+color:#4DA1FF;
+}
+#images{
+display:flex;
+flex-direction:column;
+align-items:center;
+
+
+}
+#images img{
+margin-top:40px;
+width:400px
+
+}
+
+#images h3,p{
+text-align:left;
+margin:0;
+padding:0;
+width:400px;
+}
+
+
+
+
+
+</style>
+</head>
+
+
+
+<body id="body">
+
+
+
+
+
+
+<h2>Books Transaction</h2>
+
+Book ID : <input type="text"  id="bookid">
+<button id="search">Search</button>
+
+
+<h2>Forgot User ID?</h2>
+Aadhar Number : <input type="text"  id="aadhar">
+<button id="find">Find</button>
+
+
+
+
+
+
+
+<div id="lists"></div>
+
+
+<!-- <table align="center" class="table table-striped" id="myTable">
+
+</table>--->
+
+
+
+
+
+
+
+<script>
+
+document.getElementById("search").addEventListener('click',async()=>{
+	console.log(document.getElementById("bookid").value);
+	
+	 var datas= await fetch("http://localhost:8081/LibraryManagementSystem/CheckByBookid?bookid="+document.getElementById("bookid").value,{method:"POST"});
+	 bookhistory=await datas.json();
+	 ans=bookhistory;
+	 
+	 const element = document.getElementById("lists");
+		element.innerHTML="";
+	 createrbook(bookhistory);
+
+  console.log(bookhistory);
+  
+});
+
+
+
+function createrbook(result){
+	
+	
+	
+	
+	for(var i=0;i<result.length;i++){
+    	
+		
+		 var content = document.createElement("h3");
+	   	 content.innerText = result[i].userid+"  -  "+result[i].bookid+"  -  "+result[i].issueddate+"  -  "+result[i].duedate+" - "+result[i].returneddate;
+	   	 document.getElementById("lists").append(content);
+ 	     	 
+	}
+	
+	 
+}
+	
+	
+	
+	
+	
+	
+document.getElementById("find").addEventListener('click',async()=>{
+	console.log(document.getElementById("aadhar").value);
+	
+	 var datas= await fetch("http://localhost:8081/LibraryManagementSystem/CheckByAadhar?aadhar="+document.getElementById("aadhar").value,{method:"POST"});
+	userdetail=await datas.json();
+	
+	 
+	 const element = document.getElementById("lists");
+		element.innerHTML="";
+	 creater(userdetail)
+
+  console.log(userdetail);
+  
+});
+
+
+
+function creater(result){
+	
+	
+	
+	
+	for(var i=0;i<result.length;i++){
+    	
+		
+		 var content = document.createElement("h3");
+	   	 content.innerText = result[i].userid+"  -  "+result[i].name+"  -  "+result[i].phone;
+	   	 document.getElementById("lists").append(content);
+ 	     	 
+	}
+	
+	 
+}
+	
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>

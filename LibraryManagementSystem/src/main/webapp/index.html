@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://kit.fontawesome.com/6d1bfc0c72.js" crossorigin="anonymous"></script>
+<style type="text/css">
+*{
+color:#CFD1D3;
+background:#15202B;
+}
+
+td,th,table{
+text-align:center;
+border:1px solid grey;
+border-collapse: collapse;
+padding:10px;
+margin-top:10px;
+
+}
+th{
+font-size:23px;
+}
+td{
+font-size:19px;
+}
+
+span{
+font-size:40px;
+
+}
+
+
+a{
+margin-right:20px;
+text-decoration:none;
+font-size:20px;
+color:#4DA1FF;
+}
+i{
+font-size:29px;
+color:#4DA1FF;
+}
+#images{
+display:flex;
+flex-direction:column;
+align-items:center;
+
+
+}
+#images img{
+margin-top:40px;
+width:400px
+
+}
+
+#images h3,p{
+text-align:left;
+margin:0;
+padding:0;
+width:400px;
+}
+
+
+
+
+
+</style>
+</head>
+
+
+
+<body id="body">
+
+
+<a href="addbooks.html" >  Add Books</a>
+
+<div align="right">
+<a href="provide.html" >  provide</a>
+<a href="returned.html" >  returned</a>
+<a href="check.html" >  CheckDetails</a>
+
+
+<a href="registration.html" >  Register New User!</a>
+
+
+
+
+</div>
+
+
+
+
+Book Name : <input type="text" name="bookname" id="bookname">
+<button id="search">Search</button>
+
+
+
+
+
+
+<div id="lists"></div>
+
+
+<!-- <table align="center" class="table table-striped" id="myTable">
+
+</table>--->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+var ans;
+
+document.getElementById("search").addEventListener('click',async()=>{
+	console.log(document.getElementById("bookname").value);
+	
+	 var datas= await fetch("http://localhost:8081/LibraryManagementSystem/Search?bookname="+document.getElementById("bookname").value,{method:"POST"});
+	 result=await datas.json();
+	 ans=result;
+	 
+
+		const element = document.getElementById("lists");
+		element.innerHTML="";
+	<!-- buildTable(result;
+-->	 
+	 
+
+creater(result);
+
+	 
+	    console.log(result)
+	
+})	
+	
+	
+	
+	function creater(result){
+	
+	
+	
+	
+	for(var i=0;i<result.length;i++){
+    	
+		
+		 var content = document.createElement("h3");
+	   	 content.innerText = result[i].bookid+"  -  "+result[i].bookname+"  -  "+result[i].authorname+"  -  "+result[i].currentcount+"  |  "+result[i].count;
+	   	 document.getElementById("lists").append(content);
+  	 
+	   	 
+	   	 
+	   	 
+	   	var btn = document.createElement("button");
+	   var index=0;
+	   	btn.setAttribute("id",result[i].bookid);
+	   	var g = result[i].bookid;
+	   	btn.setAttribute("onclick","fut("+g+")");
+	   	btn.innerText=("Detail");
+	   	index++;
+	   	document.getElementById("lists").append(btn);  
+	   	
+	     	 
+	}
+	
+	 
+}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+async function fut(bookid){
+	
+	 var datas= await fetch("http://localhost:8081/LibraryManagementSystem/Detail?bookid="+bookid,{method:"POST"});
+	details=await datas.json();
+	 ans=details;
+	 
+	console.log(details);
+	
+	createstring(details);
+	
+	
+}
+  
+	
+
+function createstring(details){
+	var str = "";
+	for(var i=0;i<details.length; i++){
+		
+		str += "User ID : "+ details[i].userid + ", Due Date : " + details[i].duedate +"\n"; 
+		
+	}
+	
+	if(str==""){
+		str = "All books are Available!";
+	}
+	alert(str);
+	
+}
+
+	
+	
+
+
+
+
+
+</script>
+
+</body>
+
+
+
+</html>
